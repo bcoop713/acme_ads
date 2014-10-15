@@ -19,5 +19,7 @@ class AdManagementTest(StaticLiveServerTestCase):
 		create_ad_link = self.browser.find_element_by_class_name('nav--create-ad')
 		create_ad_link.click()
 
+		self.assertEqual(self.browser.current_url, self.live_server_url + '/ads/create/')
+
 		#Carl types in the name of the new ad and the ad contents and clicks submit
 		#Carl is redirected to the ad details page located at '/ads/:id' and sees his newly created ad
