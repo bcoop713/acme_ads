@@ -41,6 +41,9 @@ INSTALLED_APPS = (
 
     #3rd Party Apps
     'selenium',
+
+    #Internal Apps
+    'ads',
 )
 
 MIDDLEWARE_CLASSES = (

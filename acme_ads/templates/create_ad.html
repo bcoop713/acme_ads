@@ -1,1 +1,17 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<main>
+	<div class="row">
+		<div class="small-12 columns">
+			<h1>Create a New Ad</h1>
+			<form method="POST">
+				{% csrf_token %}
+				<input class="create-ad--name--input" type="text" placeholder='Ad Name' name="name">
+				<textarea class="create-ad--content--input" placeholder='Ad Content' name="content"></textarea>
+				<input class="button create-ad--submit" type="submit" value="Create"> 
+			</form>	
+		</div>
+	</div>
+</main>
+{% endblock content %}
