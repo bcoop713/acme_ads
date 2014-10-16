@@ -40,3 +40,10 @@ class NewspaperDetailTest(TestCase):
 
 		self.assertEqual(response1.context['newspaper'], Newspaper.objects.get(pk=1))
 		self.assertEqual(response2.context['newspaper'], Newspaper.objects.get(pk=2))
+
+
+class NewspaperListTest(TestCase):
+
+	def test_newspaper_list_uses_proper_template(self):
+		response = self.client.get('/newspapers/')
+		self.assertTemplateUsed(response, 'newspaper_list.html')

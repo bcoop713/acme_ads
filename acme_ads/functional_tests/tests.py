@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ads.models import Ad
+from newspapers.models import Newspaper
 
 
 class AdCreationTest(StaticLiveServerTestCase):
@@ -122,3 +123,48 @@ class NewspaperCreationTest(StaticLiveServerTestCase):
 		#Jasper sees his newly created newspaper and is in awe
 		newspaper_name = self.browser.find_element_by_class_name('newspaper-detail--name').text
 		self.assertEqual(newspaper_name, 'Test Newspaper 1')
+
+
+class NewspaperNavigationTest(StaticLiveServerTestCase):
+
+	def setUp(self):
+		self.browser = webdriver.Firefox()
+		self.browser.implicitly_wait(3)
+
+		newspaper1 = Newspaper()
+		newspaper1.name = 'Test Newspaper 1'
+		newspaper1.save()
+
+		newspaper2 = Newspaper()
+		newspaper2.name = 'Test Newspaper 2'
+		newspaper2.save()
+
+		newspaper3 = Newspaper()
+		newspaper3.name = 'Test Newspaper 3'
+		newspaper3.save()
+
+	def tearDown(self):
+		self.browser.quit()
+
+	def test_can_view_newspaper_list(self):
+		#Peggy wants to check out a list of all her newspapers so she starts off at the home page
+		self.browser.get(self.live_server_url)
+
+
+		#Peggy then clicks on the "My Newspapers" link and is directed to /newspapers/
+		my_newspapers_link = self.browser.find_element_by_class_name('nav--my-newspapers')
+		my_newspapers_link.click()
+		self.assertEqual(self.browser.current_url, self.live_server_url + '/newspapers/')
+
+
+		#Peggy peruses the list of links and clicks on one to view its details
+		newspaper_list = self.browser.find_elements_by_class_name('newspaper-list--name')
+		self.assertEqual(len(newspaper_list), 3)
+
+		#Peggy is redirected to its detail page and happily views the Newspaper details
+		link = newspaper_list[1].find_element_by_tag_name('a')
+		link.click()
+		self.assertRegex(self.browser.current_url, '/newspapers/\d+/')
+
+		name = self.browser.find_element_by_class_name('newspaper-detail--name').text
+		self.assertEqual(name, 'Test Newspaper 2')

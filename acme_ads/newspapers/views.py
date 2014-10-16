@@ -16,3 +16,9 @@ def newspaper_detail(request, id):
 	context['newspaper'] = Newspaper.objects.get(pk=id)
 
 	return render(request, 'newspaper_detail.html', context)
+
+def newspaper_list(request):
+	context = {}
+	context['newspaper_list'] = Newspaper.objects.all()
+
+	return render(request, 'newspaper_list.html', context)

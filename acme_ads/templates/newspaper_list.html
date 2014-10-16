@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main>
+	<div class="row">
+		<div class="small-12 columns">
+			{% for newspaper in newspaper_list %}
+				<h2 class="newspaper-list--name">
+					<a href="{% url 'newspaper_detail' id=newspaper.id %}">{{ newspaper.name }}</a>
+				</h2>
+			{% endfor %}
+		</div>
+	</div>
+</main>
+
+{% endblock content %}
