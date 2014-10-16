@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main>
+	<div class="row">
+		<div class="small-12 columns">
+			{% for ad in ad_list %}
+				<h2 class="ad-list--name">
+					<a href="{% url 'ad_detail' id=ad.id %}">{{ ad.name }}</a>
+				</h2>
+			{% endfor %}
+		</div>
+	</div>
+</main>
+
+{% endblock content %}

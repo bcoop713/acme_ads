@@ -61,3 +61,9 @@ class AdDetailTest(TestCase):
 		self.assertEqual(response1.context['ad'], Ad.objects.get(pk=1))
 		self.assertEqual(response2.context['ad'], Ad.objects.get(pk=2))
 
+
+class AdListTest(TestCase):
+
+	def test_ad_list_uses_proper_template(self):
+		response = self.client.get('/ads/')
+		self.assertTemplateUsed(response, 'ad_list.html')

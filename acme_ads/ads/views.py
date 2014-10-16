@@ -20,3 +20,9 @@ def ad_detail(request, id):
 	context['ad'] = Ad.objects.get(pk=id)
 
 	return render(request, 'ad_detail.html', context)
+
+def ad_list(request):
+	context = {}
+	context['ad_list'] = Ad.objects.all()
+
+	return render(request, 'ad_list.html', context)
