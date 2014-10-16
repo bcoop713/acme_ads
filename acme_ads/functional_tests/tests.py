@@ -168,3 +168,54 @@ class NewspaperNavigationTest(StaticLiveServerTestCase):
 
 		name = self.browser.find_element_by_class_name('newspaper-detail--name').text
 		self.assertEqual(name, 'Test Newspaper 2')
+
+
+class AdAndNewspaperRelationTest(StaticLiveServerTestCase):
+	def setUp(self):
+		self.browser = webdriver.Firefox()
+		self.browser.implicitly_wait(3)
+
+		newspaper1 = Newspaper()
+		newspaper1.name = 'Test Newspaper 1'
+		newspaper1.save()
+
+		newspaper2 = Newspaper()
+		newspaper2.name = 'Test Newspaper 2'
+		newspaper2.save()
+
+		newspaper3 = Newspaper()
+		newspaper3.name = 'Test Newspaper 3'
+		newspaper3.save()
+
+		ad1 = Ad()
+		ad1.name = 'Test Ad 1'
+		ad1.content = 'Content 1'
+		ad1.save()
+
+		ad2 = Ad()
+		ad2.name = 'Test Ad 2'
+		ad2.content = 'Content 2'
+		ad2.save()
+		ad2.newspapers.add(newspaper1, newspaper2)
+		ad2.save()
+
+		ad3 = Ad()
+		ad3.name = 'Test Ad 3'
+		ad3.content = 'Content 3'
+		ad3.save()
+
+	def tearDown(self):
+		self.browser.quit()
+
+	def test_view_newspaper_to_ad_relations(self):
+		#Ernest wants to see what newspapers an ad is in
+		#So he goes to /ads/2/
+		self.browser.get(self.live_server_url + '/ads/2/')
+
+
+		#Ernest sees a list of newspapers that the ad is currently running in
+		free_newspaper_list = self.browser.find_elements_by_class_name('ad-detail--free-newspaper')
+
+
+		#Ernest also notices a list of newspapers that the ad is NOT currently running in
+		connected_newspaper_list = self.browser.find_elements_by_class_name('ad-detail--connected-newspaper')
