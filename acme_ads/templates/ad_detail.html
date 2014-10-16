@@ -9,6 +9,29 @@
 			<p class="ad-detail--content">{{ad.content}}</p>
 		</div>
 	</div>
+	<div class="row">
+		<div class="small-6 columns">
+			<div class="panel">
+				<h4>Connected Newspapers</h4>
+				<ul>
+					{% for newspaper in ad.newspapers.all %}
+						<li class="ad-detail--connected-newspaper">{{ newspaper.name }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="small-6 columns">
+			<div class="panel">
+				<h4>Free Newspapers</h4>
+				<ul>
+					{% for newspaper in ad.free %}
+						<li class="ad-detail--free-newspaper">{{ newspaper.name }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
 </main>
 
 {% endblock content %}

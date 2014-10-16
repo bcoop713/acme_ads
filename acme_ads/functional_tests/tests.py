@@ -214,8 +214,14 @@ class AdAndNewspaperRelationTest(StaticLiveServerTestCase):
 
 
 		#Ernest sees a list of newspapers that the ad is currently running in
-		free_newspaper_list = self.browser.find_elements_by_class_name('ad-detail--free-newspaper')
+		free_newspapers = self.browser.find_elements_by_class_name('ad-detail--free-newspaper')
+		free_newspaper_list = [newspapers.text for newspapers in free_newspapers]
+
+		self.assertSequenceEqual(free_newspaper_list, ['Test Newspaper 3'])
 
 
 		#Ernest also notices a list of newspapers that the ad is NOT currently running in
-		connected_newspaper_list = self.browser.find_elements_by_class_name('ad-detail--connected-newspaper')
+		connected_newspapers = self.browser.find_elements_by_class_name('ad-detail--connected-newspaper')
+		connected_newspaper_list = [newspaper.text for newspaper in connected_newspapers]
+
+		self.assertSequenceEqual(connected_newspaper_list, ['Test Newspaper 1', 'Test Newspaper 2'])
