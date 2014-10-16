@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Ad
+from newspapers.models import Newspaper
+from django.http import Http404
 
 
 def home(request):
@@ -26,3 +28,13 @@ def ad_list(request):
 	context['ad_list'] = Ad.objects.all()
 
 	return render(request, 'ad_list.html', context)
+
+def connect_newspaper(request, id):
+	if request.method == "POST": 
+		newspaper = Newspaper.objects.get(id=request.POST['newspaper_id'])
+		ad = Ad.objects.get(id=id)
+		ad.newspapers.add(newspaper)
+		ad.save()
+		return render(request, 'ad_detail.html', {'ad': ad})
+	else:
+		raise Http404

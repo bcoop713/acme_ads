@@ -47,3 +47,4 @@ class NewspaperListTest(TestCase):
 	def test_newspaper_list_uses_proper_template(self):
 		response = self.client.get('/newspapers/')
 		self.assertTemplateUsed(response, 'newspaper_list.html')
+

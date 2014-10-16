@@ -172,9 +172,6 @@ class NewspaperNavigationTest(StaticLiveServerTestCase):
 
 class AdAndNewspaperRelationTest(StaticLiveServerTestCase):
 	def setUp(self):
-		self.browser = webdriver.Firefox()
-		self.browser.implicitly_wait(3)
-
 		newspaper1 = Newspaper()
 		newspaper1.name = 'Test Newspaper 1'
 		newspaper1.save()
@@ -189,23 +186,48 @@ class AdAndNewspaperRelationTest(StaticLiveServerTestCase):
 
 		ad1 = Ad()
 		ad1.name = 'Test Ad 1'
+		ad1.id = 1
 		ad1.content = 'Content 1'
 		ad1.save()
 
 		ad2 = Ad()
 		ad2.name = 'Test Ad 2'
+		ad2.id = 2
 		ad2.content = 'Content 2'
 		ad2.save()
 		ad2.newspapers.add(newspaper1, newspaper2)
 		ad2.save()
 
 		ad3 = Ad()
+		ad2.id = 3
 		ad3.name = 'Test Ad 3'
 		ad3.content = 'Content 3'
 		ad3.save()
 
+		self.browser = webdriver.Firefox()
+		self.browser.implicitly_wait(3)
+
 	def tearDown(self):
 		self.browser.quit()
+
+	def test_add_remove_newspapers_to_ad(self):
+		#Phyllis wants to add a newspaper to an ad
+		#so he goes to /ads/2/
+		self.browser.get(self.live_server_url + '/ads/2/')
+
+
+		#Phyllis clicks on add next to the newspaper he wants to add
+		free_newspapers = self.browser.find_elements_by_class_name('ad-detail--free-newspaper')
+		submit_button = free_newspapers[0].find_element_by_class_name('ad-detail--newspaper--connect')
+		selected_newspaper = free_newspapers[0].text
+		submit_button.click()
+
+
+		#Phyllis notices that the page refreshes, and the newspaper he clicked
+		#is now in the Connected Newspapers column
+		connected_newspapers = self.browser.find_elements_by_class_name('ad-detail--connected-newspaper')
+		connected_newspaper_list = [newspaper.text for newspaper in connected_newspapers]
+		self.assertIn(selected_newspaper, connected_newspaper_list)
 
 	def test_view_newspaper_to_ad_relations(self):
 		#Ernest wants to see what newspapers an ad is in

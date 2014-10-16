@@ -26,7 +26,14 @@
 				<h4>Free Newspapers</h4>
 				<ul>
 					{% for newspaper in ad.free %}
-						<li class="ad-detail--free-newspaper">{{ newspaper.name }}</li>
+						<li class="ad-detail--free-newspaper">
+							{{ newspaper.name }}
+							<form action={% url 'connect_newspaper' id=ad.id %} method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="newspaper_id" value="{{newspaper.id}}">
+								<input type="submit" class='button ad-detail--newspaper--connect' value="Add">
+							</form>
+						</li>
 					{% endfor %}
 				</ul>
 			</div>

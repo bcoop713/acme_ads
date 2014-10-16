@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.http import HttpRequest
 from ads.views import create_ad
 from ads.models import Ad
+from newspapers.models import Newspaper
 
 class HomePageTest(TestCase):
 
@@ -67,3 +68,24 @@ class AdListTest(TestCase):
 	def test_ad_list_uses_proper_template(self):
 		response = self.client.get('/ads/')
 		self.assertTemplateUsed(response, 'ad_list.html')
+
+
+class ConnectNewspaperTest(TestCase):
+
+	def setUp(self):
+		newspaper1 = Newspaper(name='Test Newspaper 1')
+		newspaper1.save()
+
+		ad = Ad()
+		ad.name = 'Name 1'
+		ad.content = 'Content 1'
+		ad.save()
+
+	def test_newspaper_gets_connected_to_ad(self):
+		response = self.client.post(
+			'/ads/1/connect/',
+			data={'newspaper_id':1}
+		)
+		ad = Ad.objects.get(id=1)
+
+		self.assertEqual(ad.newspapers.count(), 1)

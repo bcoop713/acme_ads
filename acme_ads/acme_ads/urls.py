@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^ads/create/$', 'ads.views.create_ad', name='create_ad'),
     url(r'^ads/$', 'ads.views.ad_list', name='ad_list'),
     url(r'^ads/(?P<id>\d+)/$', 'ads.views.ad_detail', name='ad_detail'),
+    url(r'^ads/(?P<id>\d+)/connect/$', 'ads.views.connect_newspaper', name='connect_newspaper'),
 
     #Newspaper App Links
     url(r'^newspapers/create/$', 'newspapers.views.create_newspaper', name='create_newspaper'),
