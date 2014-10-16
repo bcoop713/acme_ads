@@ -89,3 +89,36 @@ class AdNavigationTest(StaticLiveServerTestCase):
 		self.assertEqual(content, 'Content 2')
 
 
+class NewspaperCreationTest(StaticLiveServerTestCase):
+
+	def setUp(self):
+		self.browser = webdriver.Firefox()
+		self.browser.implicitly_wait(3)
+
+	def tearDown(self):
+		self.browser.quit()
+
+	def test_can_create_and_view_a_newspaper(self):
+		#Jasper wants to create a new ad so he goes to the web root
+		self.browser.get(self.live_server_url)
+
+
+		#Jasper clicks on the nav link "Create Newspaper" and is redirected to /newspapers/create/
+		create_newspaper_link = self.browser.find_element_by_class_name('nav--create-newspaper')
+		create_newspaper_link.click()
+		self.assertEqual(self.browser.current_url, self.live_server_url + '/newspapers/create/')
+
+		
+		#Jasper types in the name of the new newspaper and clicks submit
+		newspaper_name_input = self.browser.find_element_by_class_name('create-newspaper--name--input')
+		newspaper_name_input.send_keys('Test Newspaper 1')
+		self.browser.find_element_by_class_name('create-newspaper--submit').click()
+
+		
+		#Jasper gets redirected to the newspaper detail page at /newspapers/:id/
+		self.assertRegex(self.browser.current_url, '/newspapers/\d+/')
+
+
+		#Jasper sees his newly created newspaper and is in awe
+		newspaper_name = self.browser.find_element_by_class_name('newspaper-detail--name').text
+		self.assertEqual(newspaper_name, 'Test Newspaper 1')

@@ -44,6 +44,7 @@ INSTALLED_APPS = (
 
     #Internal Apps
     'ads',
+    'newspapers'
 )
 
 MIDDLEWARE_CLASSES = (
