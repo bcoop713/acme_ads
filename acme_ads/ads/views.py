@@ -38,3 +38,13 @@ def connect_newspaper(request, id):
 		return render(request, 'ad_detail.html', {'ad': ad})
 	else:
 		raise Http404
+
+def disconnect_newspaper(request, id):
+	if request.method == "POST": 
+		newspaper = Newspaper.objects.get(id=request.POST['newspaper_id'])
+		ad = Ad.objects.get(id=id)
+		ad.newspapers.remove(newspaper)
+		ad.save()
+		return render(request, 'ad_detail.html', {'ad': ad})
+	else:
+		raise Http404

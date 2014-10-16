@@ -89,3 +89,28 @@ class ConnectNewspaperTest(TestCase):
 		ad = Ad.objects.get(id=1)
 
 		self.assertEqual(ad.newspapers.count(), 1)
+
+class DisonnectNewspaperTest(TestCase):
+
+	def setUp(self):
+		newspaper1 = Newspaper(name='Test Newspaper 1')
+		newspaper1.save()
+
+		newspaper2 = Newspaper(name='Test Newspaper 2')
+		newspaper2.save()
+
+		ad = Ad()
+		ad.name = 'Name 1'
+		ad.content = 'Content 1'
+		ad.save()
+		ad.newspapers.add(newspaper1, newspaper2)
+		ad.save()
+
+	def test_newspaper_gets_connected_to_ad(self):
+		response = self.client.post(
+			'/ads/1/disconnect/',
+			data={'newspaper_id':1}
+		)
+		ad = Ad.objects.get(id=1)
+
+		self.assertEqual(ad.newspapers.count(), 1)

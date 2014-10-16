@@ -229,6 +229,16 @@ class AdAndNewspaperRelationTest(StaticLiveServerTestCase):
 		connected_newspaper_list = [newspaper.text for newspaper in connected_newspapers]
 		self.assertIn(selected_newspaper, connected_newspaper_list)
 
+		#Phyllis now decides she wants to remove a newspaper from the same ad and cliks the remove button
+		disconnect_button = connected_newspapers[0].find_element_by_class_name('ad-detail--newspaper--disconnect')
+		selected_newspaper = connected_newspapers[0].text
+		disconnect_button.click()
+
+		#Phyllis notices that the page refreshed, and the selected news paper is now in the free column
+		free_newspapers = self.browser.find_elements_by_class_name('ad-detail--free-newspaper')
+		free_newspaper_list = [newspaper.text for newspaper in free_newspapers]
+		self.assertIn(selected_newspaper, free_newspaper_list)
+
 	def test_view_newspaper_to_ad_relations(self):
 		#Ernest wants to see what newspapers an ad is in
 		#So he goes to /ads/2/
@@ -247,3 +257,4 @@ class AdAndNewspaperRelationTest(StaticLiveServerTestCase):
 		connected_newspaper_list = [newspaper.text for newspaper in connected_newspapers]
 
 		self.assertSequenceEqual(connected_newspaper_list, ['Test Newspaper 1', 'Test Newspaper 2'])
+

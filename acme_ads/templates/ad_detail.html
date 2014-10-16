@@ -15,7 +15,14 @@
 				<h4>Connected Newspapers</h4>
 				<ul>
 					{% for newspaper in ad.newspapers.all %}
-						<li class="ad-detail--connected-newspaper">{{ newspaper.name }}</li>
+						<li class="ad-detail--connected-newspaper">
+							{{ newspaper.name }}
+							<form action={% url 'disconnect_newspaper' id=ad.id %} method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="newspaper_id" value="{{newspaper.id}}">
+								<input type="submit" class='button ad-detail--newspaper--disconnect' value="Remove">
+							</form>
+						</li>
 					{% endfor %}
 				</ul>
 			</div>
